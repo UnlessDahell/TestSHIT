@@ -6,10 +6,10 @@ local Light = game:GetService("Lighting")
 
 local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/refs/heads/main/source.lua", true))()
 
--- Create Luna window
+-- luna interface (my fav ui)
 local Window = Luna:CreateWindow("Ravo Hub|Evade|", "Evade V2.6")
 
--- Create notifications (Luna uses different notification syntax)
+-- luna notifi
 Luna:Notify("Ravo Hub", "Ravo Hub.", 4, "rbxassetid://4483345998")
 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
 wait(4)
@@ -159,7 +159,7 @@ function RandomEmote()
     Luna:Notify("Random Emoting...", "You pressed the Random Emote keybind", 5, "rbxassetid://4483345998")
 end
 
--- Create tabs with Luna
+-- tab
 local MainTab = Window:CreateTab("Main features", "rbxassetid://4483345998")
 local MiscTab = Window:CreateTab("Extra", "rbxassetid://4483345998")
 local ESPTab = Window:CreateTab("Esp", "rbxassetid://4483345998")
@@ -167,7 +167,7 @@ local TeleportTab = Window:CreateTab("Teleport", "rbxassetid://4483345998")
 local FunTab = Window:CreateTab("Fun", "rbxassetid://4483345998")
 local CreditsTab = Window:CreateTab("Credits", "rbxassetid://4483345998")
 
--- Main Tab Sections
+-- main tab shit whatever
 local MiscTab3 = MainTab:CreateSection("Auto Farms")
 
 MainTab:CreateToggle("Money Farm", false, function(Value)
@@ -178,7 +178,7 @@ MainTab:CreateToggle("Afk Farm", false, function(Value)
     Settings.afkfarm = Value
 end)
 
--- Sliders
+-- slide my worm
 local MainTab3 = MainTab:CreateSection("Sliders")
 local Misctab5 = MiscTab:CreateSection("Sliders")
 
@@ -205,7 +205,7 @@ MiscTab:CreateSlider("Day & night Slider", 0, 24, 14, function(Time)
     game.Lighting.ClockTime = Time
 end)
 
--- Toggles
+-- togg
 local FunTab2 = FunTab:CreateSection("Toggles")
 local MiscTab3 = MainTab:CreateSection("Toggles")
 
@@ -238,7 +238,7 @@ FunTab:CreateToggle("Auto Wistle", false, function(Value)
     autowistlefunction()
 end)
 
--- Buttons
+-- butts
 local FunTab3 = FunTab:CreateSection("Buttons")
 local MiscTab2 = MiscTab:CreateSection("Buttons")
 
@@ -465,7 +465,7 @@ MiscTab:CreateButton("Test Emote (Permanant)", function()
     game:GetService("ReplicatedStorage").Events.UI.Purchase:InvokeServer("Emotes", "Test")
 end)
 
--- Keybinds
+-- keyb
 local MiscTab1 = MiscTab:CreateSection("KeyBinds")
 local FunTab1 = FunTab:CreateSection("KeyBinds")
 
@@ -510,7 +510,7 @@ FunTab:CreateKeybind("Random Emote", Enum.KeyCode.Z, function()
     RandomEmote()
 end)
 
--- ESP Toggles
+-- esp togg
 ESPTab:CreateToggle("Bots tracers", true, function(Value)
     getgenv().toggleespmpt = Value
 end)
@@ -519,13 +519,13 @@ ESPTab:CreateColorpicker("Colour", Color3.fromRGB(255, 255, 255), function(Value
     getgenv().mptespcolour = Value
 end)
 
--- Credits
+-- credits
 CreditsTab:CreateLabel("Owner/Main Dev: Ravo")
 CreditsTab:CreateLabel("Credits: Ravo")
 CreditsTab:CreateLabel("Credits: Ravo")
 CreditsTab:CreateLabel("Credits: Ravo")
 
--- ESP Functionality
+-- esp func
 local cam = workspace.CurrentCamera
 local rs = game:GetService'RunService'
 
