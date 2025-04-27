@@ -255,7 +255,7 @@ local survivorsFolder = workspace:WaitForChild("Players"):WaitForChild("Survivor
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = cloneref(game:GetService("CoreGui"))
 
-local button = Instance.new("TextButton")
+local button = Instance.new("TextButton1")
 button.Parent = screenGui
 button.Size = UDim2.new(0, 220, 0, 50)
 button.Position = UDim2.new(0.5, -110, 0.5, -25)
@@ -348,8 +348,6 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
-local ModParagraph = GenTab:CreateParagraph({Title = "Uhhh", Content = "Not Completely Bypass SO! Stay safe"})
-
 -- Anti-Mod
 local ModButton = GenTab:CreateButton({
    Name = "ANTI-Mod",
@@ -398,11 +396,6 @@ updLbl()
 
 updateModLabel()
    end,
-})
-
-local ParagraphOnebyOne = GenTab:CreateParagraph({
-    Title = "Another Tips",
-    Content = "If 1x1 popup solved, stand still for 1-2 seconds to not get suspicious!"
 })
 
 GenTab:CreateToggle({
