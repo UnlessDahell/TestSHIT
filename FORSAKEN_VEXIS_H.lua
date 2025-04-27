@@ -348,92 +348,6 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
-local Paragraph = Tab:CreateParagraph({Title = "Uhhh", Content = "Not Completely Bypass SO! Stay safe"})
-
--- Anti-Mod
-local ModButton = GenTab:CreateButton({
-   Name = "ANTI-Mod",
-   Callback = function()
-   local plrs = game:GetService("Players")
-local lp = plrs.LocalPlayer
-local gid, minR = 33548380, 2
-
-local sg = Instance.new("ScreenGui")
-sg.Name = "ModNotifier"
-sg.Parent = cloneref(game:GetService("CoreGui"))
-
-local lbl = Instance.new("TextLabel")
-lbl.Parent = sg
-lbl.Size = UDim2.new(0, 200, 0, 50)
-lbl.Position = UDim2.new(1, -210, 0, 10)
-lbl.BackgroundTransparency = 0.5
-lbl.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-lbl.Font = Enum.Font.SourceSansBold
-lbl.TextWrapped = true
-lbl.TextScaled = true
-lbl.Visible = false
-
-local function updLbl()
-    local mods = {}
-
-    for _, p in pairs(plrs:GetPlayers()) do
-        if p:IsInGroup(gid) and p:GetRankInGroup(gid) >= minR then
-            table.insert(mods, p.DisplayName)
-        end
-    end
-
-    lbl.Visible = #mods > 0
-    lbl.Text = #mods > 0 and "Mods In Game\n" .. table.concat(mods, "\n") or ""
-end
-
-plrs.PlayerAdded:Connect(function(p)
-    p.CharacterAdded:Wait()
-    updLbl()
-end)
-
-plrs.PlayerRemoving:Connect(updLbl)
-
-updLbl()
-
-updateModLabel()
-   end,
-})
-
-local 1x1sParagraph = GenTab:CreateParagraph({Title = "Another Tips", Content = "If 1x1 popupsolved stand still for 1-2 sec to don't get suspicious!"})
-
-GenTab:CreateToggle({
-    Name = "1x1 Popup Solver",
-    CurrentValue = false,
-    Callback = function(state)
-        if state then
-            local popupSolver = game:GetService("RunService").Heartbeat:Connect(function()
-                local tempUI = player:FindFirstChild("PlayerGui")
-                if tempUI then
-                    tempUI = tempUI:FindFirstChild("TemporaryUI")
-                    if tempUI then
-                        local popups = tempUI:GetChildren()
-                        for _, popup in ipairs(popups) do
-                            if popup.Name == "1x1x1x1Popup" then
-                                local centerX = popup.AbsolutePosition.X + (popup.AbsoluteSize.X / 2)
-                                local centerY = popup.AbsolutePosition.Y + (popup.AbsoluteSize.Y / 2)
-                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, player.PlayerGui, 1)
-                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, player.PlayerGui, 1)
-                            end
-                        end
-                    end
-                end
-            end)
-            aimbotLoops["PopupSolver"] = popupSolver
-        else
-            if aimbotLoops["PopupSolver"] then
-                aimbotLoops["PopupSolver"]:Disconnect()
-                aimbotLoops["PopupSolver"] = nil
-            end
-        end
-    end
-})
-
 -- NoClip Tab 
 local NoClipTab = Window:CreateTab("NoClip", "annoyed")
 
@@ -757,6 +671,38 @@ AimbotTab:CreateToggle({
     Name = "C00lkid Aim",
     CurrentValue = false,
     Callback = coolkidAimbot
+})
+
+GenTab:CreateToggle({
+    Name = "1x1 Popup Solver",
+    CurrentValue = false,
+    Callback = function(state)
+        if state then
+            local popupSolver = game:GetService("RunService").Heartbeat:Connect(function()
+                local tempUI = player:FindFirstChild("PlayerGui")
+                if tempUI then
+                    tempUI = tempUI:FindFirstChild("TemporaryUI")
+                    if tempUI then
+                        local popups = tempUI:GetChildren()
+                        for _, popup in ipairs(popups) do
+                            if popup.Name == "1x1x1x1Popup" then
+                                local centerX = popup.AbsolutePosition.X + (popup.AbsoluteSize.X / 2)
+                                local centerY = popup.AbsolutePosition.Y + (popup.AbsoluteSize.Y / 2)
+                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, player.PlayerGui, 1)
+                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, player.PlayerGui, 1)
+                            end
+                        end
+                    end
+                end
+            end)
+            aimbotLoops["PopupSolver"] = popupSolver
+        else
+            if aimbotLoops["PopupSolver"] then
+                aimbotLoops["PopupSolver"]:Disconnect()
+                aimbotLoops["PopupSolver"] = nil
+            end
+        end
+    end
 })
 
 -- Initialization complete notification
