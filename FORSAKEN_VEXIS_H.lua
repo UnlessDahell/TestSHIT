@@ -31,7 +31,7 @@ local Window = Rayfield:CreateWindow({
     },
     Discord = {
         Enabled = true,
-        Invite = "yourdiscordcode",
+        Invite = ".gg/YVyfVYGR23",
         RememberJoins = true
     },
     KeySystem = false,
@@ -114,7 +114,7 @@ local excludeNames = {
 
 local VisionTab = Window:CreateTab("Vision","eye")
 
-local Paragraph = Tab:CreateParagraph({Title = "Hightlighs Tips!", Content = "These Toggle Can Highlight! As name it is! BUT! don't act like you're allseeing act like you accident found it!"})
+local Paragraph = VisionTab:CreateParagraph({Title = "Hightlighs Tips!", Content = "These Toggle Can Highlight! As name it is! BUT! don't act like you're allseeing act like you accident found it!"})
 
 VisionTab:CreateToggle({
     Name = "Highlight Generators",
@@ -236,7 +236,7 @@ end)
 
 local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
 
-local Paragraph = Tab:CreateParagraph({Title = "Bypaass Gen Tips!", Content = "1. Generator is completely bypasses but! i recommand use it whisely! you can get ban if someone cough you!"})
+local GenParagraph = GenTab:CreateParagraph({Title = "Bypaass Gen Tips!", Content = "1. Generator is completely bypasses but! i recommand use it whisely! you can get ban if someone cough you!"})
 
 -- Bypass Generator
 local Toggle = GenTab:CreateToggle({
@@ -348,7 +348,7 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
-local Paragraph = Tab:CreateParagraph({Title = "Uhhh", Content = "Not Completely Bypass SO! Stay safe"})
+local ModParagraph = GenTab:CreateParagraph({Title = "Uhhh", Content = "Not Completely Bypass SO! Stay safe"})
 
 -- Anti-Mod
 local ModButton = GenTab:CreateButton({
@@ -400,7 +400,7 @@ updateModLabel()
    end,
 })
 
-local 1x1sParagraph = GenTab:CreateParagraph({Title = "Another Tips", Content = "If 1x1 popupsolved stand still for 1-2 sec to don't get suspicious!","
+local ParagraphOnebyOne = GenTab:CreateParagraph({Title = "Another Tips", Content = "If 1x1 popupsolved stand still for 1-2 sec to don't get suspicious!","
 
 GenTab:CreateToggle({
     Name = "1x1 Popup Solver",
