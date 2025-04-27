@@ -31,6 +31,46 @@ local Window = Rayfield:CreateWindow({
         RememberJoins = true
     },
     KeySystem = false,
+    Theme = {
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Background = Color3.fromRGB(0, 0, 0),
+        Topbar = Color3.fromRGB(10, 10, 10),
+        Shadow = Color3.fromRGB(10, 10, 10),
+
+        NotificationBackground = Color3.fromRGB(20, 20, 20),
+        NotificationActionsBackground = Color3.fromRGB(255, 145, 0),
+
+        TabBackground = Color3.fromRGB(30, 30, 30),
+        TabStroke = Color3.fromRGB(40, 40, 40),
+        TabBackgroundSelected = Color3.fromRGB(255, 145, 0),
+        TabTextColor = Color3.fromRGB(255, 255, 255),
+        SelectedTabTextColor = Color3.fromRGB(0, 0, 0),
+
+        ElementBackground = Color3.fromRGB(20, 20, 20),
+        ElementBackgroundHover = Color3.fromRGB(30, 30, 30),
+        SecondaryElementBackground = Color3.fromRGB(15, 15, 15),
+        ElementStroke = Color3.fromRGB(50, 50, 50),
+        SecondaryElementStroke = Color3.fromRGB(40, 40, 40),
+        
+        SliderBackground = Color3.fromRGB(255, 145, 0),
+        SliderProgress = Color3.fromRGB(255, 145, 0),
+        SliderStroke = Color3.fromRGB(255, 180, 60),
+
+        ToggleBackground = Color3.fromRGB(25, 25, 25),
+        ToggleEnabled = Color3.fromRGB(255, 145, 0),
+        ToggleDisabled = Color3.fromRGB(100, 100, 100),
+        ToggleEnabledStroke = Color3.fromRGB(255, 180, 60),
+        ToggleDisabledStroke = Color3.fromRGB(125, 125, 125),
+        ToggleEnabledOuterStroke = Color3.fromRGB(255, 145, 0),
+        ToggleDisabledOuterStroke = Color3.fromRGB(65, 65, 65),
+
+        DropdownSelected = Color3.fromRGB(40, 40, 40),
+        DropdownUnselected = Color3.fromRGB(30, 30, 30),
+
+        InputBackground = Color3.fromRGB(25, 25, 25),
+        InputStroke = Color3.fromRGB(255, 145, 0),
+        PlaceholderColor = Color3.fromRGB(200, 200, 200)
+    }
 })
 
 local MainTab = Window:CreateTab("Main", 4483362458)
