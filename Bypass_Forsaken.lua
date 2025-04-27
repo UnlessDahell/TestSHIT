@@ -123,27 +123,6 @@ local aimbotSounds = {
     Coolkid = {} -- Special case for mobile aim assist
 }
 
--- Create main window with explicit settings
-local Window = Rayfield:CreateWindow({
-    Name = "Vexis Aimbot Hub",
-    LoadingTitle = "Character-Specific Aimbots",
-    LoadingSubtitle = "by Apple",
-    ConfigurationSaving = {
-        Enabled = false,
-        FolderName = nil,
-        FileName = "AimbotConfig"
-    },
-    Discord = {
-        Enabled = true,
-        Invite = "fGFV3r9yKC",
-        RememberJoins = true
-    },
-    KeySystem = false -- Disable key system for easier testing
-})
-
--- Wait for window to fully initialize
-task.wait(1)
-
 -- Universal aimbot function
 local function createAimbot(characterName, maxIterations, specialCondition)
     return function(state)
