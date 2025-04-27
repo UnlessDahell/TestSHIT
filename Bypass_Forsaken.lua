@@ -17,7 +17,7 @@ end
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-    Name = "Vexis Hub | Script Hub",
+    Name = "Vexis Hub | Forsaken",
     LoadingTitle = "Vexis Hub | .gg/YVyfVYGR23",
     LoadingSubtitle = "Welcome back, " .. player.Name,
     ConfigurationSaving = {
