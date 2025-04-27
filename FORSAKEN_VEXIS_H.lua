@@ -400,7 +400,10 @@ updateModLabel()
    end,
 })
 
-local ParagraphOnebyOne = GenTab:CreateParagraph({Title = "Another Tips", Content = "If 1x1 popupsolved stand still for 1-2 sec to don't get suspicious!","
+local ParagraphOnebyOne = GenTab:CreateParagraph({
+    Title = "Another Tips",
+    Content = "If 1x1 popup solved, stand still for 1-2 seconds to not get suspicious!"
+})
 
 GenTab:CreateToggle({
     Name = "1x1 Popup Solver",
