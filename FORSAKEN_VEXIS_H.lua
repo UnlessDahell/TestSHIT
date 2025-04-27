@@ -349,7 +349,7 @@ button.MouseButton1Click:Connect(function()
 end)
 
 -- Anti-Mod
-local ModButton = GenTab:CreateButton({
+local Button = GenTab:CreateButton({
    Name = "ANTI-Mod",
    Callback = function()
    local plrs = game:GetService("Players")
