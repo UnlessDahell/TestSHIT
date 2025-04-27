@@ -91,6 +91,13 @@ MainTab:CreateParagraph({
     )
 })
 
+MainTab:CreateButton({
+    Name = "Copy Discord (.gg/YVyfVYGR23)",
+    Callback = function()
+        setclipboard("https://discord.gg/YVyfVYGR23")
+    end,
+})
+
 -- Initialize variables
 local player = game.Players.LocalPlayer
 local VirtualInputManager = game:GetService('VirtualInputManager')
@@ -310,29 +317,10 @@ AimbotTab:CreateSection("Character Specific Aimbots")
 -- Initialization complete notification
 task.wait(1) -- Ensure everything is loaded
 Rayfield:Notify({
-    Title = "Aimbot Hub Ready",
+    Title = "Aimbot Ready",
     Content = "All features loaded successfully!",
     Duration = 6.5,
     Image = "rbxassetid://99937635381008"
-})
-
-local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
-
-local Toggle = GenTab:CreateToggle({
-    Name = "Bypass Done Generator Button",
-    CurrentValue = false,
-    Flag = "ToggleButton",
-    Callback = function(Value)
-        button.Visible = Value
-    end,
-})
-
-
-MainTab:CreateButton({
-    Name = "Copy Discord (.gg/YVyfVYGR23)",
-    Callback = function()
-        setclipboard("https://discord.gg/YVyfVYGR23")
-    end,
 })
 
 local VisionTab = Window:CreateTab("Vision","eye")
