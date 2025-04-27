@@ -1,26 +1,12 @@
--- Services
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
-local UserInputService = game:GetService("UserInputService")
-local VirtualInputManager = game:GetService('VirtualInputManager')
 
--- Player
 local player = Players.LocalPlayer
 local userId = player.UserId
 
--- ESP Handler Replacement
-local function applyESP(object, fillColor, outlineColor)
-    if object:FindFirstChildOfClass("Highlight") then return end
-    local highlight = Instance.new("Highlight")
-    highlight.FillColor = fillColor
-    highlight.OutlineColor = outlineColor
-    highlight.Parent = object
-end
-
--- Functions
 local function getAccountAge()
     return player.AccountAge .. " days"
 end
@@ -32,7 +18,6 @@ local function getGameName()
     return (success and info and info.Name) or "Unknown"
 end
 
--- Load Rayfield
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local Window = Rayfield:CreateWindow({
@@ -46,7 +31,7 @@ local Window = Rayfield:CreateWindow({
     },
     Discord = {
         Enabled = true,
-        Invite = ".gg/YVyfVYGR23",
+        Invite = "yourdiscordcode",
         RememberJoins = true
     },
     KeySystem = false,
@@ -55,21 +40,26 @@ local Window = Rayfield:CreateWindow({
         Background = Color3.fromRGB(0, 0, 0),
         Topbar = Color3.fromRGB(10, 10, 10),
         Shadow = Color3.fromRGB(10, 10, 10),
+
         NotificationBackground = Color3.fromRGB(20, 20, 20),
         NotificationActionsBackground = Color3.fromRGB(255, 145, 0),
+
         TabBackground = Color3.fromRGB(30, 30, 30),
         TabStroke = Color3.fromRGB(40, 40, 40),
         TabBackgroundSelected = Color3.fromRGB(255, 145, 0),
         TabTextColor = Color3.fromRGB(255, 255, 255),
         SelectedTabTextColor = Color3.fromRGB(0, 0, 0),
+
         ElementBackground = Color3.fromRGB(20, 20, 20),
         ElementBackgroundHover = Color3.fromRGB(30, 30, 30),
         SecondaryElementBackground = Color3.fromRGB(15, 15, 15),
         ElementStroke = Color3.fromRGB(50, 50, 50),
         SecondaryElementStroke = Color3.fromRGB(40, 40, 40),
+        
         SliderBackground = Color3.fromRGB(255, 145, 0),
         SliderProgress = Color3.fromRGB(255, 145, 0),
         SliderStroke = Color3.fromRGB(255, 180, 60),
+
         ToggleBackground = Color3.fromRGB(25, 25, 25),
         ToggleEnabled = Color3.fromRGB(255, 145, 0),
         ToggleDisabled = Color3.fromRGB(100, 100, 100),
@@ -77,15 +67,16 @@ local Window = Rayfield:CreateWindow({
         ToggleDisabledStroke = Color3.fromRGB(125, 125, 125),
         ToggleEnabledOuterStroke = Color3.fromRGB(255, 145, 0),
         ToggleDisabledOuterStroke = Color3.fromRGB(65, 65, 65),
+
         DropdownSelected = Color3.fromRGB(40, 40, 40),
         DropdownUnselected = Color3.fromRGB(30, 30, 30),
+
         InputBackground = Color3.fromRGB(25, 25, 25),
         InputStroke = Color3.fromRGB(255, 145, 0),
         PlaceholderColor = Color3.fromRGB(200, 200, 200)
     }
 })
 
--- Main Tab
 local MainTab = Window:CreateTab("Main", 4483362458)
 
 MainTab:CreateParagraph({
@@ -111,7 +102,6 @@ MainTab:CreateButton({
     end,
 })
 
--- Variables for Highlights
 local generatorHighlight = false
 local killerHighlight = false
 local survivorHighlight = false
@@ -122,13 +112,9 @@ local excludeNames = {
     ["BlueFlag"] = true
 }
 
--- Vision Tab (ESP)
-local VisionTab = Window:CreateTab("Vision", "eye")
+local VisionTab = Window:CreateTab("Vision","eye")
 
-VisionTab:CreateParagraph({
-    Title = "Highlight Tips!",
-    Content = "These toggles highlight objects. Don't act suspicious when using them!"
-})
+local Paragraph = Tab:CreateParagraph({Title = "Hightlighs Tips!", Content = "These Toggle Can Highlight! As name it is! BUT! don't act like you're allseeing act like you accident found it!"})
 
 VisionTab:CreateToggle({
     Name = "Highlight Generators",
@@ -171,13 +157,12 @@ VisionTab:CreateToggle({
     end,
 })
 
--- ESP Functions
 local function highlightGenerators()
     local map = Workspace:FindFirstChild("Map") and Workspace.Map:FindFirstChild("Ingame") and Workspace.Map.Ingame:FindFirstChild("Map")
     if not map then return end
     for _, obj in ipairs(map:GetChildren()) do
         if obj:IsA("Model") and obj.Name == "Generator" then
-            applyESP(obj, Color3.new(1, 1, 0), Color3.new(1, 1, 0.5))
+            ESPHandler.applyESP(obj, Color3.new(1, 1, 0), Color3.new(1, 1, 0.5))
         end
     end
 end
@@ -187,7 +172,7 @@ local function highlightKillers()
     if not killers then return end
     for _, obj in ipairs(killers:GetChildren()) do
         if obj:IsA("Model") and obj:FindFirstChild("Humanoid") then
-            applyESP(obj, Color3.new(1, 0, 0), Color3.new(1, 0.5, 0.5))
+            ESPHandler.applyESP(obj, Color3.new(1, 0, 0), Color3.new(1, 0.5, 0.5))
         end
     end
 end
@@ -197,7 +182,7 @@ local function highlightSurvivors()
     if not survivors then return end
     for _, obj in ipairs(survivors:GetChildren()) do
         if obj:IsA("Model") and obj:FindFirstChild("Humanoid") then
-            applyESP(obj, Color3.new(0, 1, 0), Color3.new(0.5, 1, 0.5))
+            ESPHandler.applyESP(obj, Color3.new(0, 1, 0), Color3.new(0.5, 1, 0.5))
         end
     end
 end
@@ -231,7 +216,6 @@ local function scanTools()
     end
 end
 
--- Heartbeat Update Loop
 RunService.Heartbeat:Connect(function()
     if generatorHighlight then
         highlightGenerators()
@@ -250,59 +234,67 @@ Workspace.ChildAdded:Connect(function(child)
     end
 end)
 
--- Bypass Tab
 local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
 
-GenTab:CreateParagraph({
-    Title = "Bypass Gen Tips!",
-    Content = "Generator bypass is strong, but use carefully or risk ban!"
+local Paragraph = Tab:CreateParagraph({Title = "Bypaass Gen Tips!", Content = "1. Generator is completely bypasses but! i recommand use it whisely! you can get ban if someone cough you!"})
+
+-- Bypass Generator
+local Toggle = GenTab:CreateToggle({
+    Name = "Bypass Done Generator Button",
+    CurrentValue = false,
+    Flag = "ToggleButton",
+    Callback = function(Value)
+        button.Visible = Value
+    end,
 })
 
--- Generator Done Button
-local screenGui_GenBypass = Instance.new("ScreenGui")
-screenGui_GenBypass.Parent = cloneref(game:GetService("CoreGui"))
+local player = game.Players.LocalPlayer
+local playerName = player.Name
+local survivorsFolder = workspace:WaitForChild("Players"):WaitForChild("Survivors")
 
-local button_GenBypass = Instance.new("TextButton")
-button_GenBypass.Parent = screenGui_GenBypass
-button_GenBypass.Size = UDim2.new(0, 220, 0, 50)
-button_GenBypass.Position = UDim2.new(0.5, -110, 0.5, -25)
-button_GenBypass.Text = "Done Generator"
-button_GenBypass.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-button_GenBypass.TextColor3 = Color3.fromRGB(255, 255, 255)
-button_GenBypass.TextSize = 18
-button_GenBypass.Font = Enum.Font.GothamBold
-button_GenBypass.BorderSizePixel = 0
-button_GenBypass.AutoButtonColor = false
-button_GenBypass.Active = true
-button_GenBypass.Draggable = true
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = cloneref(game:GetService("CoreGui"))
+
+local button = Instance.new("TextButton")
+button.Parent = screenGui
+button.Size = UDim2.new(0, 220, 0, 50)
+button.Position = UDim2.new(0.5, -110, 0.5, -25)
+button.Text = "Done Generator"
+button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextSize = 18
+button.Font = Enum.Font.GothamBold
+button.BorderSizePixel = 0
+button.AutoButtonColor = false
+button.Active = true
+button.Draggable = true
 
 local corner = Instance.new("UICorner")
-corner.Parent = button_GenBypass
+corner.Parent = button
 corner.CornerRadius = UDim.new(0, 10)
 
 local padding = Instance.new("UIPadding")
-padding.Parent = button_GenBypass
+padding.Parent = button
 padding.PaddingTop = UDim.new(0, 8)
 padding.PaddingBottom = UDim.new(0, 8)
 padding.PaddingLeft = UDim.new(0, 12)
 padding.PaddingRight = UDim.new(0, 12)
 
-button_GenBypass.Visible = false -- Hide by default
+button.Visible = true
 
-local survivorsFolder = Workspace:WaitForChild("Players"):WaitForChild("Survivors")
-local cooldown = false
+local cooldown = false 
 
 local function getNearestGenerator()
     local playerModel = nil
     for _, model in pairs(survivorsFolder:GetChildren()) do
-        if model:IsA("Model") and model:GetAttribute("Username") == player.Name then
+        if model:IsA("Model") and model:GetAttribute("Username") == playerName then
             playerModel = model
             break
         end
     end
 
     if not playerModel then
-        warn("Player model not found!")
+        warn("Player model not found in Survivors folder!")
         return
     end
 
@@ -310,7 +302,7 @@ local function getNearestGenerator()
     local closestGen = nil
     local shortestDist = math.huge
 
-    local map = Workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map")
+    local map = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map")
 
     for _, obj in pairs(map:GetChildren()) do
         if obj:IsA("Model") and obj.Name == "Generator" then
@@ -328,117 +320,111 @@ local function getNearestGenerator()
     return closestGen
 end
 
-button_GenBypass.MouseButton1Click:Connect(function()
+button.MouseButton1Click:Connect(function()
     if cooldown then return end
-    cooldown = true
-    button_GenBypass.Text = "Cooldown"
-    button_GenBypass.TextColor3 = Color3.fromRGB(255, 0, 0)
+
+    cooldown = true 
+    button.Text = "Cooldown"
+    button.TextColor3 = Color3.fromRGB(255, 0, 0)
+    button.TextSize = 18
 
     local nearestGen = getNearestGenerator()
     if nearestGen then
         local remotes = nearestGen:WaitForChild("Remotes")
+
         remotes:WaitForChild("RE"):FireServer()
         task.wait(0.05)
         remotes:WaitForChild("RF"):InvokeServer("leave")
+
     else
         warn("No generator found!")
     end
 
     task.wait(1)
-    button_GenBypass.Text = "Done Generator"
-    button_GenBypass.TextColor3 = Color3.fromRGB(255, 255, 255)
-    cooldown = false
+
+    button.Text = "Done Generator"
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 18
+    cooldown = false 
 end)
 
-GenTab:CreateToggle({
-    Name = "Show Done Generator Button",
-    CurrentValue = false,
-    Callback = function(state)
-        button_GenBypass.Visible = state
-    end
-})
+local Paragraph = Tab:CreateParagraph({Title = "Uhhh", Content = "Not Completely Bypass SO! Stay safe"})
 
--- Anti-Mod System
-GenTab:CreateParagraph({
-    Title = "Anti-Mod Tips!",
-    Content = "Not a complete bypass. Stay safe if you see mods!"
-})
+-- Anti-Mod
+local ModButton = GenTab:CreateButton({
+   Name = "ANTI-Mod",
+   Callback = function()
+   local plrs = game:GetService("Players")
+local lp = plrs.LocalPlayer
+local gid, minR = 33548380, 2
 
-GenTab:CreateButton({
-    Name = "Enable Anti-Mod",
-    Callback = function()
-        local plrs = game:GetService("Players")
-        local gid, minR = 33548380, 2
+local sg = Instance.new("ScreenGui")
+sg.Name = "ModNotifier"
+sg.Parent = cloneref(game:GetService("CoreGui"))
 
-        local antiModScreenGui = Instance.new("ScreenGui")
-        antiModScreenGui.Name = "ModNotifier"
-        antiModScreenGui.Parent = cloneref(game:GetService("CoreGui"))
+local lbl = Instance.new("TextLabel")
+lbl.Parent = sg
+lbl.Size = UDim2.new(0, 200, 0, 50)
+lbl.Position = UDim2.new(1, -210, 0, 10)
+lbl.BackgroundTransparency = 0.5
+lbl.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+lbl.Font = Enum.Font.SourceSansBold
+lbl.TextWrapped = true
+lbl.TextScaled = true
+lbl.Visible = false
 
-        local lbl = Instance.new("TextLabel")
-        lbl.Parent = antiModScreenGui
-        lbl.Size = UDim2.new(0, 200, 0, 50)
-        lbl.Position = UDim2.new(1, -210, 0, 10)
-        lbl.BackgroundTransparency = 0.5
-        lbl.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-        lbl.Font = Enum.Font.SourceSansBold
-        lbl.TextWrapped = true
-        lbl.TextScaled = true
-        lbl.Visible = false
+local function updLbl()
+    local mods = {}
 
-        local function updLbl()
-            local mods = {}
-            for _, p in pairs(plrs:GetPlayers()) do
-                if p:IsInGroup(gid) and p:GetRankInGroup(gid) >= minR then
-                    table.insert(mods, p.DisplayName)
-                end
-            end
-            lbl.Visible = #mods > 0
-            lbl.Text = #mods > 0 and "Mods In Game\n" .. table.concat(mods, "\n") or ""
+    for _, p in pairs(plrs:GetPlayers()) do
+        if p:IsInGroup(gid) and p:GetRankInGroup(gid) >= minR then
+            table.insert(mods, p.DisplayName)
         end
-
-        plrs.PlayerAdded:Connect(function()
-            task.wait(1)
-            updLbl()
-        end)
-        plrs.PlayerRemoving:Connect(function()
-            updLbl()
-        end)
-
-        updLbl()
     end
+
+    lbl.Visible = #mods > 0
+    lbl.Text = #mods > 0 and "Mods In Game\n" .. table.concat(mods, "\n") or ""
+end
+
+plrs.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Wait()
+    updLbl()
+end)
+
+plrs.PlayerRemoving:Connect(updLbl)
+
+updLbl()
+
+updateModLabel()
+   end,
 })
 
--- Popup Solver 1x1
-GenTab:CreateParagraph({
-    Title = "1x1 Popup Solver",
-    Content = "Solves popups automatically! Stand still for 1-2 seconds after solving."
-})
-
-local aimbotLoops = {}
+local 1x1sParagraph = GenTab:CreateParagraph({Title = "Another Tips", Content = "If 1x1 popupsolved stand still for 1-2 sec to don't get suspicious!"})
 
 GenTab:CreateToggle({
-    Name = "Enable Popup Solver",
+    Name = "1x1 Popup Solver",
     CurrentValue = false,
     Callback = function(state)
         if state then
-            aimbotLoops["PopupSolver"] = RunService.Heartbeat:Connect(function()
+            local popupSolver = game:GetService("RunService").Heartbeat:Connect(function()
                 local tempUI = player:FindFirstChild("PlayerGui")
                 if tempUI then
                     tempUI = tempUI:FindFirstChild("TemporaryUI")
                     if tempUI then
-                        for _, popup in ipairs(tempUI:GetChildren()) do
+                        local popups = tempUI:GetChildren()
+                        for _, popup in ipairs(popups) do
                             if popup.Name == "1x1x1x1Popup" then
                                 local centerX = popup.AbsolutePosition.X + (popup.AbsoluteSize.X / 2)
                                 local centerY = popup.AbsolutePosition.Y + (popup.AbsoluteSize.Y / 2)
                                 VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, player.PlayerGui, 1)
                                 VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, player.PlayerGui, 1)
-                                task.wait(0.2)
                             end
                         end
                     end
                 end
             end)
+            aimbotLoops["PopupSolver"] = popupSolver
         else
             if aimbotLoops["PopupSolver"] then
                 aimbotLoops["PopupSolver"]:Disconnect()
@@ -448,107 +434,17 @@ GenTab:CreateToggle({
     end
 })
 
--- NoClip Tab
+-- NoClip Tab 
 local NoClipTab = Window:CreateTab("NoClip", "annoyed")
 
-NoClipTab:CreateParagraph({
-    Title = "NoClip Tips!",
-    Content = "Don't stay inside walls too long or you might get kicked! Use wisely."
-})
-
-local running = false
-local buttonVisible = false
-local buttonMovable = false
-local dragging = false
-local dragInput, dragStart, startPos
-local char = player.Character or player.CharacterAdded:Wait()
-
-local screenGui_NoClip = Instance.new("ScreenGui")
-screenGui_NoClip.Name = "NoClipButtonUI"
-screenGui_NoClip.Parent = cloneref(game:GetService("CoreGui"))
-screenGui_NoClip.Enabled = false
-
-local button_NoClip = Instance.new("TextButton")
-button_NoClip.Name = "NoClipToggleButton"
-button_NoClip.Parent = screenGui_NoClip
-button_NoClip.Size = UDim2.new(0, 100, 0, 40)
-button_NoClip.Position = UDim2.new(0.85, 0, 0.8, 0)
-button_NoClip.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-button_NoClip.TextColor3 = Color3.fromRGB(255, 255, 255)
-button_NoClip.Text = "NoClip: OFF"
-button_NoClip.Font = Enum.Font.GothamBold
-button_NoClip.TextSize = 14
-button_NoClip.BorderSizePixel = 1
-button_NoClip.BorderColor3 = Color3.fromRGB(60, 60, 60)
-button_NoClip.AutoButtonColor = true
-button_NoClip.ZIndex = 10
-button_NoClip.Active = true
-button_NoClip.Draggable = false
-
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 6)
-UICorner.Parent = button_NoClip
-
-local function updateInput(input)
-    local delta = input.Position - dragStart
-    button_NoClip.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-end
-
-button_NoClip.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and buttonMovable then
-        dragging = true
-        dragStart = input.Position
-        startPos = button_NoClip.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-button_NoClip.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging and buttonMovable then
-        dragInput = input
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging and buttonMovable then
-        updateInput(input)
-    end
-end)
-
-local function NoClipLoop()
-    if not char then return end
-    while running and char and char:FindFirstChild("Humanoid") do
-        for _, v in pairs(char:GetDescendants()) do
-            if v:IsA("BasePart") and v.CanCollide then
-                v.CanCollide = false
-            end
-        end
-        RunService.Stepped:Wait()
-    end
-end
-
-local function ToggleNoClip()
-    running = not running
-    button_NoClip.Text = running and "NoClip: ON" or "NoClip: OFF"
-    button_NoClip.BackgroundColor3 = running and Color3.fromRGB(0, 100, 0) or Color3.fromRGB(30, 30, 30)
-    
-    if running then
-        char = player.Character or player.CharacterAdded:Wait()
-        coroutine.wrap(NoClipLoop)()
-    end
-end
+local Paragraph = NoClipTab:CreateParagraph({Title = "NoClip Tips!", Content = "Don't Noclip to the walls instead noclip something like thin wall / or something that have thin layer and don't! stay in that spot too long or you'll get kick or ban! ues at your own risk!"})
 
 NoClipTab:CreateToggle({
     Name = "Show NoClip Button",
     CurrentValue = buttonVisible,
     Callback = function(value)
         buttonVisible = value
-        screenGui_NoClip.Enabled = buttonVisible
+        screenGui.Enabled = buttonVisible
     end
 })
 
@@ -557,7 +453,7 @@ NoClipTab:CreateToggle({
     CurrentValue = buttonMovable,
     Callback = function(value)
         buttonMovable = value
-        button_NoClip.Draggable = value
+        button.Draggable = value
     end
 })
 
@@ -566,10 +462,11 @@ NoClipTab:CreateToggle({
     CurrentValue = running,
     Callback = function(value)
         running = value
-        button_NoClip.Text = running and "NoClip: ON" or "NoClip: OFF"
-        button_NoClip.BackgroundColor3 = running and Color3.fromRGB(0, 100, 0) or Color3.fromRGB(30, 30, 30)
+        button.Text = running and "NoClip: ON" or "NoClip: OFF"
+        button.BackgroundColor3 = running and Color3.fromRGB(0, 100, 0) or Color3.fromRGB(30, 30, 30)
         
         if running then
+            char = player.Character or player.CharacterAdded:Wait()
             coroutine.wrap(NoClipLoop)()
         end
     end
@@ -577,9 +474,9 @@ NoClipTab:CreateToggle({
 
 NoClipTab:CreateLabel("Press 'F' to toggle NoClip (when button is visible)")
 
-button_NoClip.MouseButton1Click:Connect(ToggleNoClip)
+button.MouseButton1Click:Connect(ToggleNoClip)
 
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed and input.KeyCode == Enum.KeyCode.F and buttonVisible then
         ToggleNoClip()
     end
@@ -592,22 +489,126 @@ player.CharacterAdded:Connect(function(newChar)
     end
 end)
 
--- === Aimbot Tab === --
-local AimbotTab = Window:CreateTab("Aimbot", "target")
+local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local running = false
+local buttonVisible = false
+local buttonMovable = false
+local dragging = false
+local dragInput, dragStart, startPos
 
-AimbotTab:CreateParagraph({
-    Title = "Aimbot Tips!",
-    Content = "Re-enable aimbot every new game round!"
-})
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "NoClipButtonUI"
+screenGui.Parent = game.CoreGui
+screenGui.Enabled = false
+
+local button = Instance.new("TextButton")
+button.Name = "NoClipToggleButton"
+button.Parent = screenGui
+button.Size = UDim2.new(0, 100, 0, 40)
+button.Position = UDim2.new(0.85, 0, 0.8, 0)
+button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.Text = "NoClip: OFF"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 14
+button.BorderSizePixel = 1
+button.BorderColor3 = Color3.fromRGB(60, 60, 60)
+button.AutoButtonColor = true
+button.ZIndex = 10
+button.Active = true
+button.Draggable = false
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 6)
+UICorner.Parent = button
+
+local function updateInput(input)
+    local delta = input.Position - dragStart
+    button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 and buttonMovable then
+        dragging = true
+        dragStart = input.Position
+        startPos = button.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+button.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging and buttonMovable then
+        dragInput = input
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input == dragInput and dragging and buttonMovable then
+        updateInput(input)
+    end
+end)
+
+local function NoClipLoop()
+    if not char then return end
+    
+    while running and char and char:FindFirstChild("Humanoid") do
+        for _, v in pairs(char:GetDescendants()) do
+            if v:IsA("BasePart") and v.CanCollide then
+                v.CanCollide = false
+            end
+        end
+        game:GetService("RunService").Stepped:Wait()
+    end
+end
+
+local function ToggleNoClip()
+    running = not running
+    button.Text = running and "NoClip: ON" or "NoClip: OFF"
+    button.BackgroundColor3 = running and Color3.fromRGB(0, 100, 0) or Color3.fromRGB(30, 30, 30)
+    
+    if running then
+        char = player.Character or player.CharacterAdded:Wait()
+        coroutine.wrap(NoClipLoop)()
+    end
+end
+
+-- Aimbot Specifct Character
+-- Ensure Rayfield loads properly
+-- Initialize variables
+local player = game.Players.LocalPlayer
+local VirtualInputManager = game:GetService('VirtualInputManager')
+local aimbotLoops = {}
 
 local aimbotSounds = {
-    Chance = {"rbxassetid://201858045", "rbxassetid://139012439429121"},
-    Shedletsky = {"rbxassetid://12222225", "rbxassetid://83851356262523"},
-    Guest1337 = {"rbxassetid://609342351"},
-    JohnDoe = {"rbxassetid://109525294317144"},
-    Jason = {"rbxassetid://112809109188560", "rbxassetid://102228729296384"},
-    OneByOne = {"rbxassetid://79782181585087", "rbxassetid://128711903717226"},
-    Coolkid = {}
+    Chance = {
+        "rbxassetid://201858045",
+        "rbxassetid://139012439429121"
+    },
+    Shedletsky = {
+        "rbxassetid://12222225",
+        "rbxassetid://83851356262523"
+    },
+    Guest1337 = {
+        "rbxassetid://609342351"
+    },
+    JohnDoe = {
+        "rbxassetid://109525294317144"
+    },
+    Jason = {
+        "rbxassetid://112809109188560",
+        "rbxassetid://102228729296384"
+    },
+    OneByOne = {
+        "rbxassetid://79782181585087",
+        "rbxassetid://128711903717226"
+    },
+    Coolkid = {} 
 }
 
 local function createAimbot(characterName, maxIterations, specialCondition)
@@ -627,10 +628,11 @@ local function createAimbot(characterName, maxIterations, specialCondition)
                 Content = "This aimbot only works with "..characterName,
                 Duration = 5
             })
-            return
+            return 
         end
 
         if state then
+            -- Disconnect existing loop if any
             if aimbotLoops[characterName] then
                 aimbotLoops[characterName]:Disconnect()
             end
@@ -639,7 +641,7 @@ local function createAimbot(characterName, maxIterations, specialCondition)
                 for _, soundId in pairs(aimbotSounds[characterName]) do
                     if child.Name == soundId then
                         local targetFolder = characterName == "OneByOne" and "Survivors" or "Killers"
-                        local targets = Workspace.Players:FindFirstChild(targetFolder)
+                        local targets = game.Workspace.Players:FindFirstChild(targetFolder)
                         
                         if targets then
                             local nearestTarget = nil
@@ -659,16 +661,17 @@ local function createAimbot(characterName, maxIterations, specialCondition)
                                 local targetHRP = nearestTarget.HumanoidRootPart
                                 local playerHRP = player.Character.HumanoidRootPart
                                 local num = 1
-
+                                
+                                -- Special condition for 1x1x1x1 extended duration
                                 if specialCondition and child.Name == "rbxassetid://79782181585087" then
                                     maxIterations = 220
                                 end
-
+                                
                                 while num <= maxIterations and player.Character and player.Character:FindFirstChild("HumanoidRootPart") do
                                     task.wait(0.01)
-                                    num += 1
-                                    Workspace.CurrentCamera.CFrame = CFrame.new(
-                                        Workspace.CurrentCamera.CFrame.Position, 
+                                    num = num + 1
+                                    workspace.CurrentCamera.CFrame = CFrame.new(
+                                        workspace.CurrentCamera.CFrame.Position, 
                                         targetHRP.Position
                                     )
                                     playerHRP.CFrame = CFrame.lookAt(
@@ -689,33 +692,78 @@ local function createAimbot(characterName, maxIterations, specialCondition)
     end
 end
 
+-- Special case for Coolkid (mobile aim assist)
 local function coolkidAimbot(state)
-    local network = ReplicatedStorage:FindFirstChild("Modules") and ReplicatedStorage.Modules:FindFirstChild("Network")
-    if network and network:FindFirstChild("RemoteEvent") then
-        network.RemoteEvent:FireServer("SetDevice", state and "Mobile" or "PC")
-    else
-        Rayfield:Notify({
-            Title = "Error",
-            Content = "Network event missing!",
-            Duration = 5
-        })
+    local network = game:GetService("ReplicatedStorage"):FindFirstChild("Modules")
+    if network then
+        network = network:FindFirstChild("Network")
+        if network then
+            network = network:FindFirstChild("RemoteEvent")
+            if network then
+                network:FireServer("SetDevice", state and "Mobile" or "PC")
+                return
+            end
+        end
     end
+    Rayfield:Notify({
+        Title = "Error",
+        Content = "Could not find network event",
+        Duration = 5
+    })
 end
 
--- Create Aimbot Toggles
-AimbotTab:CreateToggle({Name = "Chance Aim", CurrentValue = false, Callback = createAimbot("Chance", 100)})
-AimbotTab:CreateToggle({Name = "Shedletsky Aim", CurrentValue = false, Callback = createAimbot("Shedletsky", 100)})
-AimbotTab:CreateToggle({Name = "Guest1337 Aim", CurrentValue = false, Callback = createAimbot("Guest1337", 100)})
-AimbotTab:CreateToggle({Name = "John Doe Spike Aim", CurrentValue = false, Callback = createAimbot("JohnDoe", 330)})
-AimbotTab:CreateToggle({Name = "Jason Aim (BUG)", CurrentValue = false, Callback = createAimbot("Jason", 70)})
-AimbotTab:CreateToggle({Name = "1x1 Aim", CurrentValue = false, Callback = createAimbot("OneByOne", 100, true)})
-AimbotTab:CreateToggle({Name = "C00lkid Aim", CurrentValue = false, Callback = coolkidAimbot})
+-- Create main tab (renamed to AimbotTab)
+local AimbotTab = Window:CreateTab("AimbotTab", "target") -- Using "target" as icon
+local Paragraph = AimbotTab:CreateParagraph({Title = "Aimbot Tips!", Content = "Everytimes new game start don't forget to Re-Enable Aimbot or It'll not aiming for you!"})
 
--- Final Notification
-task.wait(1)
+-- Add all aimbots to the main AimbotTab
+AimbotTab:CreateToggle({
+    Name = "Chance Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Chance", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Shedletsky Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Shedletsky", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Guest1337 Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Guest1337", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "John Doe Spike Aim",
+    CurrentValue = false,
+    Callback = createAimbot("JohnDoe", 330)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Jason Aim (BUG)",
+    CurrentValue = false,
+    Callback = createAimbot("Jason", 70)
+})
+
+AimbotTab:CreateToggle({
+    Name = "1x1 Aim",
+    CurrentValue = false,
+    Callback = createAimbot("OneByOne", 100, true)
+})
+
+AimbotTab:CreateToggle({
+    Name = "C00lkid Aim",
+    CurrentValue = false,
+    Callback = coolkidAimbot
+})
+
+-- Initialization complete notification
+task.wait(1) -- Ensure everything is loaded
 Rayfield:Notify({
-    Title = "Aimbot Ready!",
-    Content = "Everything loaded. Good luck!",
+    Title = "Aimbot is  Ready",
+    Content = "I think everything is loaded?",
     Duration = 6.5,
     Image = "rbxassetid://99937635381008"
 })
