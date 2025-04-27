@@ -294,7 +294,7 @@ local function getNearestGenerator()
     end
 
     if not playerModel then
-        warn("Player model not found in Survivors folder!")
+        warn("Model Player'Suvival' is not found")
         return
     end
 
