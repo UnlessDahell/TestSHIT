@@ -114,8 +114,6 @@ local excludeNames = {
 
 local VisionTab = Window:CreateTab("Vision","eye")
 
-local Paragraph = VisionTab:CreateParagraph({Title = "Hightlighs Tips!", Content = "These Toggle Can Highlight! As name it is! BUT! don't act like you're allseeing act like you accident found it!"})
-
 VisionTab:CreateToggle({
     Name = "Highlight Generators",
     CurrentValue = false,
@@ -236,7 +234,6 @@ end)
 
 local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
 
--- Bypass Generator
 local Toggle = GenTab:CreateToggle({
     Name = "Bypass Done Generator Button",
     CurrentValue = false,
@@ -346,10 +343,7 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
--- NoClip Tab 
 local NoClipTab = Window:CreateTab("NoClip", "annoyed")
-
-local Paragraph = NoClipTab:CreateParagraph({Title = "NoClip Tips!", Content = "Don't Noclip to the walls instead noclip something like thin wall / or something that have thin layer and don't! stay in that spot too long or you'll get kick or ban! ues at your own risk!"})
 
 NoClipTab:CreateToggle({
     Name = "Show NoClip Button",
@@ -624,11 +618,9 @@ local function coolkidAimbot(state)
     })
 end
 
--- Create main tab (renamed to AimbotTab)
-local AimbotTab = Window:CreateTab("AimbotTab", "target") -- Using "target" as icon
-local Paragraph = AimbotTab:CreateParagraph({Title = "Aimbot Tips!", Content = "Everytimes new game start don't forget to Re-Enable Aimbot or It'll not aiming for you!"})
 
--- Add all aimbots to the main AimbotTab
+local AimbotTab = Window:CreateTab("AimbotTab", "target")
+
 AimbotTab:CreateToggle({
     Name = "Chance Aim",
     CurrentValue = false,
@@ -703,8 +695,7 @@ GenTab:CreateToggle({
     end
 })
 
--- Initialization complete notification
-task.wait(1) -- Ensure everything is loaded
+task.wait(1) 
 Rayfield:Notify({
     Title = "Aimbot is  Ready",
     Content = "I think everything is loaded?",
