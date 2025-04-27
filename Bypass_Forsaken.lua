@@ -279,7 +279,7 @@ AimbotTab:CreateToggle({
 })
 
 -- Popup solver (for 1x1x1x1)
-AimbotTab:CreateToggle({
+GenTab:CreateToggle({
     Name = "Instant Pop-Up Solver",
     CurrentValue = false,
     Callback = function(state)
@@ -443,3 +443,133 @@ Workspace.ChildAdded:Connect(function(child)
     end
 end)
 
+-- Bypass Tab
+local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
+
+-- Generater Bypass
+local Toggle = GenTab:CreateToggle({
+    Name = "Bypass Done Generator Button",
+    CurrentValue = false,
+    Flag = "ToggleButton",
+    Callback = function(Value)
+        button.Visible = Value
+    end,
+})
+
+local player = game.Players.LocalPlayer
+local playerName = player.Name
+local survivorsFolder = workspace:WaitForChild("Players"):WaitForChild("Survivors")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = cloneref(game:GetService("CoreGui"))
+
+local button = Instance.new("TextButton")
+button.Parent = screenGui
+button.Size = UDim2.new(0, 220, 0, 50)
+button.Position = UDim2.new(0.5, -110, 0.5, -25)
+button.Text = "Done Generator"
+button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextSize = 18
+button.Font = Enum.Font.GothamBold
+button.BorderSizePixel = 0
+button.AutoButtonColor = false
+button.Active = true
+button.Draggable = true
+
+local corner = Instance.new("UICorner")
+corner.Parent = button
+corner.CornerRadius = UDim.new(0, 10)
+
+local padding = Instance.new("UIPadding")
+padding.Parent = button
+padding.PaddingTop = UDim.new(0, 8)
+padding.PaddingBottom = UDim.new(0, 8)
+padding.PaddingLeft = UDim.new(0, 12)
+padding.PaddingRight = UDim.new(0, 12)
+
+button.Visible = true
+
+local cooldown = false 
+
+local function getNearestGenerator()
+    local playerModel = nil
+    for _, model in pairs(survivorsFolder:GetChildren()) do
+        if model:IsA("Model") and model:GetAttribute("Username") == playerName then
+            playerModel = model
+            break
+        end
+    end
+
+    if not playerModel then
+        warn("Player model not found in Survivors folder!")
+        return
+    end
+
+    local rootPart = playerModel:WaitForChild("HumanoidRootPart")
+    local closestGen = nil
+    local shortestDist = math.huge
+
+    local map = workspace:WaitForChild("Map"):WaitForChild("Ingame"):WaitForChild("Map")
+
+    for _, obj in pairs(map:GetChildren()) do
+        if obj:IsA("Model") and obj.Name == "Generator" then
+            local primaryPart = obj.PrimaryPart or obj:FindFirstChild("PrimaryPart")
+            if primaryPart then
+                local dist = (primaryPart.Position - rootPart.Position).Magnitude
+                if dist < shortestDist then
+                    shortestDist = dist
+                    closestGen = obj
+                end
+            end
+        end
+    end
+
+    return closestGen
+end
+
+button.MouseButton1Click:Connect(function()
+    if cooldown then return end
+
+    cooldown = true 
+    button.Text = "Cooldown"
+    button.TextColor3 = Color3.fromRGB(255, 0, 0)
+    button.TextSize = 18
+
+    local nearestGen = getNearestGenerator()
+    if nearestGen then
+        local remotes = nearestGen:WaitForChild("Remotes")
+
+        remotes:WaitForChild("RE"):FireServer()
+        task.wait(0.05)
+        remotes:WaitForChild("RF"):InvokeServer("leave")
+
+    else
+        warn("No generator found!")
+    end
+
+    task.wait(1)
+
+    button.Text = "Done Generator"
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 18
+    cooldown = false 
+end)
+
+local Button = GenTab:CreateButton({
+   Name = "Infinite Stamina",
+   Callback = function()
+   while task.wait() do
+local Sprinting = cloneref(game:GetService("ReplicatedStorage")).Systems.Character.Game.Sprinting
+local m = require(Sprinting)
+m.Stamina = 100
+            end
+   end,
+})
+
+local ModButton = GenTab:CreateButton({
+   Name = "Anti-Mod",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/Gazer-Ha/Forsakontol/refs/heads/main/Anti%20Moderator"))()
+   end,
+})
