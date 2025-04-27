@@ -218,6 +218,252 @@ Workspace.ChildAdded:Connect(function(child)
     end
 end)
 
+-- Initialize variables
+local player = game.Players.LocalPlayer
+local VirtualInputManager = game:GetService('VirtualInputManager')
+local aimbotLoops = {}
+
+-- Sound IDs for detection
+local aimbotSounds = {
+    Chance = {
+        "rbxassetid://201858045",
+        "rbxassetid://139012439429121"
+    },
+    Shedletsky = {
+        "rbxassetid://12222225",
+        "rbxassetid://83851356262523"
+    },
+    Guest1337 = {
+        "rbxassetid://609342351"
+    },
+    JohnDoe = {
+        "rbxassetid://109525294317144"
+    },
+    Jason = {
+        "rbxassetid://112809109188560",
+        "rbxassetid://102228729296384"
+    },
+    OneByOne = {
+        "rbxassetid://79782181585087",
+        "rbxassetid://128711903717226"
+    },
+    Coolkid = {} -- Special case for mobile aim assist
+}
+
+-- Create main window with explicit settings
+local Window = Rayfield:CreateWindow({
+    Name = "Vexis Aimbot Hub",
+    LoadingTitle = "Character-Specific Aimbots",
+    LoadingSubtitle = "by Apple",
+    ConfigurationSaving = {
+        Enabled = false,
+        FolderName = nil,
+        FileName = "AimbotConfig"
+    },
+    Discord = {
+        Enabled = true,
+        Invite = "fGFV3r9yKC",
+        RememberJoins = true
+    },
+    KeySystem = false -- Disable key system for easier testing
+})
+
+-- Wait for window to fully initialize
+task.wait(1)
+
+-- Universal aimbot function
+local function createAimbot(characterName, maxIterations, specialCondition)
+    return function(state)
+        if not player.Character then
+            Rayfield:Notify({
+                Title = "Error",
+                Content = "Character not found!",
+                Duration = 5
+            })
+            return
+        end
+
+        if player.Character.Name ~= characterName and state then
+            Rayfield:Notify({
+                Title = "Wrong Character",
+                Content = "This aimbot only works with "..characterName,
+                Duration = 5
+            })
+            return 
+        end
+
+        if state then
+            -- Disconnect existing loop if any
+            if aimbotLoops[characterName] then
+                aimbotLoops[characterName]:Disconnect()
+            end
+            
+            aimbotLoops[characterName] = player.Character:WaitForChild("HumanoidRootPart").ChildAdded:Connect(function(child)
+                for _, soundId in pairs(aimbotSounds[characterName]) do
+                    if child.Name == soundId then
+                        local targetFolder = characterName == "OneByOne" and "Survivors" or "Killers"
+                        local targets = game.Workspace.Players:FindFirstChild(targetFolder)
+                        
+                        if targets then
+                            local nearestTarget = nil
+                            local shortestDistance = math.huge
+                            
+                            for _, target in pairs(targets:GetChildren()) do
+                                if target:IsA("Model") and target:FindFirstChild("HumanoidRootPart") then
+                                    local distance = (target.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                                    if distance < shortestDistance then
+                                        shortestDistance = distance
+                                        nearestTarget = target
+                                    end
+                                end
+                            end
+                            
+                            if nearestTarget then
+                                local targetHRP = nearestTarget.HumanoidRootPart
+                                local playerHRP = player.Character.HumanoidRootPart
+                                local num = 1
+                                
+                                -- Special condition for 1x1x1x1 extended duration
+                                if specialCondition and child.Name == "rbxassetid://79782181585087" then
+                                    maxIterations = 220
+                                end
+                                
+                                while num <= maxIterations and player.Character and player.Character:FindFirstChild("HumanoidRootPart") do
+                                    task.wait(0.01)
+                                    num = num + 1
+                                    workspace.CurrentCamera.CFrame = CFrame.new(
+                                        workspace.CurrentCamera.CFrame.Position, 
+                                        targetHRP.Position
+                                    )
+                                    playerHRP.CFrame = CFrame.lookAt(
+                                        playerHRP.Position, 
+                                        Vector3.new(targetHRP.Position.X, targetHRP.Position.Y, targetHRP.Position.Z))
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            if aimbotLoops[characterName] then
+                aimbotLoops[characterName]:Disconnect()
+                aimbotLoops[characterName] = nil
+            end
+        end
+    end
+end
+
+-- Special case for Coolkid (mobile aim assist)
+local function coolkidAimbot(state)
+    local network = game:GetService("ReplicatedStorage"):FindFirstChild("Modules")
+    if network then
+        network = network:FindFirstChild("Network")
+        if network then
+            network = network:FindFirstChild("RemoteEvent")
+            if network then
+                network:FireServer("SetDevice", state and "Mobile" or "PC")
+                return
+            end
+        end
+    end
+    Rayfield:Notify({
+        Title = "Error",
+        Content = "Could not find network event",
+        Duration = 5
+    })
+end
+
+-- Create main tab (renamed to AimbotTab)
+local AimbotTab = Window:CreateTab("AimbotTab", "target") -- Using "target" as icon
+
+-- Add all aimbots to the main AimbotTab
+AimbotTab:CreateToggle({
+    Name = "Chance Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Chance", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Shedletsky Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Shedletsky", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Guest1337 Aim",
+    CurrentValue = false,
+    Callback = createAimbot("Guest1337", 100)
+})
+
+AimbotTab:CreateToggle({
+    Name = "John Doe Spike Aim",
+    CurrentValue = false,
+    Callback = createAimbot("JohnDoe", 330)
+})
+
+AimbotTab:CreateToggle({
+    Name = "Jason Aim (BUG)",
+    CurrentValue = false,
+    Callback = createAimbot("Jason", 70)
+})
+
+AimbotTab:CreateToggle({
+    Name = "1x1x1x1 Aim",
+    CurrentValue = false,
+    Callback = createAimbot("OneByOne", 100, true)
+})
+
+AimbotTab:CreateToggle({
+    Name = "C00lkid Aim",
+    CurrentValue = false,
+    Callback = coolkidAimbot
+})
+
+-- Popup solver (for 1x1x1x1)
+AimbotTab:CreateToggle({
+    Name = "Instant Pop-Up Solver",
+    CurrentValue = false,
+    Callback = function(state)
+        if state then
+            local popupSolver = game:GetService("RunService").Heartbeat:Connect(function()
+                local tempUI = player:FindFirstChild("PlayerGui")
+                if tempUI then
+                    tempUI = tempUI:FindFirstChild("TemporaryUI")
+                    if tempUI then
+                        local popups = tempUI:GetChildren()
+                        for _, popup in ipairs(popups) do
+                            if popup.Name == "1x1x1x1Popup" then
+                                local centerX = popup.AbsolutePosition.X + (popup.AbsoluteSize.X / 2)
+                                local centerY = popup.AbsolutePosition.Y + (popup.AbsoluteSize.Y / 2)
+                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, player.PlayerGui, 1)
+                                VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, player.PlayerGui, 1)
+                            end
+                        end
+                    end
+                end
+            end)
+            aimbotLoops["PopupSolver"] = popupSolver
+        else
+            if aimbotLoops["PopupSolver"] then
+                aimbotLoops["PopupSolver"]:Disconnect()
+                aimbotLoops["PopupSolver"] = nil
+            end
+        end
+    end
+})
+
+-- Add a section label
+AimbotTab:CreateSection("Character Specific Aimbots")
+
+-- Initialization complete notification
+task.wait(1) -- Ensure everything is loaded
+Rayfield:Notify({
+    Title = "Aimbot Hub Ready",
+    Content = "All features loaded successfully!",
+    Duration = 6.5,
+    Image = "rbxassetid://99937635381008"
+})
+
 local GenTab = Window:CreateTab("Bypass", "gallery-vertical-end")
 
 local Toggle = GenTab:CreateToggle({
