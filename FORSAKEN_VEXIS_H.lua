@@ -348,56 +348,6 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
--- Anti-Mod
-local Button = GenTab:CreateButton({
-   Name = "ANTI-Mod",
-   Callback = function()
-   local plrs = game:GetService("Players")
-local lp = plrs.LocalPlayer
-local gid, minR = 33548380, 2
-
-local sg = Instance.new("ScreenGui")
-sg.Name = "ModNotifier"
-sg.Parent = cloneref(game:GetService("CoreGui"))
-
-local lbl = Instance.new("TextLabel")
-lbl.Parent = sg
-lbl.Size = UDim2.new(0, 200, 0, 50)
-lbl.Position = UDim2.new(1, -210, 0, 10)
-lbl.BackgroundTransparency = 0.5
-lbl.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-lbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-lbl.Font = Enum.Font.SourceSansBold
-lbl.TextWrapped = true
-lbl.TextScaled = true
-lbl.Visible = false
-
-local function updLbl()
-    local mods = {}
-
-    for _, p in pairs(plrs:GetPlayers()) do
-        if p:IsInGroup(gid) and p:GetRankInGroup(gid) >= minR then
-            table.insert(mods, p.DisplayName)
-        end
-    end
-
-    lbl.Visible = #mods > 0
-    lbl.Text = #mods > 0 and "Mods In Game\n" .. table.concat(mods, "\n") or ""
-end
-
-plrs.PlayerAdded:Connect(function(p)
-    p.CharacterAdded:Wait()
-    updLbl()
-end)
-
-plrs.PlayerRemoving:Connect(updLbl)
-
-updLbl()
-
-updateModLabel()
-   end,
-})
-
 GenTab:CreateToggle({
     Name = "1x1 Popup Solver",
     CurrentValue = false,
