@@ -556,7 +556,7 @@ button.MouseButton1Click:Connect(function()
     cooldown = false 
 end)
 
-local Button = GenTab:CreateButton({
+local Button1 = GenTab:CreateButton({
    Name = "Infinite Stamina",
    Callback = function()
    while task.wait() do
@@ -567,7 +567,7 @@ m.Stamina = 100
    end,
 })
 
-local ModButton = GenTab:CreateButton({
+local Button2 = GenTab:CreateButton({
    Name = "Anti-Mod",
    Callback = function()
    loadstring(game:HttpGet("https://raw.githubusercontent.com/Gazer-Ha/Forsakontol/refs/heads/main/Anti%20Moderator"))()
