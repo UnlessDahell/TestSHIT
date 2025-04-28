@@ -233,7 +233,7 @@ local function coolkidAimbot(state)
 end
 
 -- Create main tab (renamed to AimbotTab)
-local AimbotTab = Window:CreateTab("AimbotTab", "target") -- Using "target" as icon
+local AimbotTab = Window:CreateTab("Aimbot", "crosshair") -- Using "target" as icon
 
 -- Add all aimbots to the main AimbotTab
 AimbotTab:CreateToggle({
@@ -279,8 +279,8 @@ AimbotTab:CreateToggle({
 })
 
 -- Popup solver (for 1x1x1x1)
-GenTab:CreateToggle({
-    Name = "Instant Pop-Up Solver",
+AimbotTab:CreateToggle({
+    Name = "1x1 PopUp Solver",
     CurrentValue = false,
     Callback = function(state)
         if state then
