@@ -98,12 +98,11 @@ MainTab:CreateButton({
     end,
 })
 
--- Initialize variables
 local player = game.Players.LocalPlayer
 local VirtualInputManager = game:GetService('VirtualInputManager')
 local aimbotLoops = {}
 
--- Sound IDs for detection
+-- sond id for detect
 local aimbotSounds = {
     Chance = {
         "rbxassetid://201858045",
@@ -127,10 +126,10 @@ local aimbotSounds = {
         "rbxassetid://79782181585087",
         "rbxassetid://128711903717226"
     },
-    Coolkid = {} -- Special case for mobile aim assist
+    Coolkid = {} -- in case for mibile user
 }
 
--- Universal aimbot function
+-- aimbot
 local function createAimbot(characterName, maxIterations, specialCondition)
     return function(state)
         if not player.Character then
@@ -152,7 +151,7 @@ local function createAimbot(characterName, maxIterations, specialCondition)
         end
 
         if state then
-            -- Disconnect existing loop if any
+            -- diccon loop if it exist
             if aimbotLoops[characterName] then
                 aimbotLoops[characterName]:Disconnect()
             end
@@ -212,7 +211,7 @@ local function createAimbot(characterName, maxIterations, specialCondition)
     end
 end
 
--- Special case for Coolkid (mobile aim assist)
+-- special case for C00lkid (mobile aim assist)
 local function coolkidAimbot(state)
     local network = game:GetService("ReplicatedStorage"):FindFirstChild("Modules")
     if network then
@@ -232,10 +231,10 @@ local function coolkidAimbot(state)
     })
 end
 
--- Create main tab (renamed to AimbotTab)
+-- abottab
 local AimbotTab = Window:CreateTab("Aimbot", "crosshair") -- Using "target" as icon
 
--- Add all aimbots to the main AimbotTab
+-- all toggles
 AimbotTab:CreateToggle({
     Name = "Chance Aim",
     CurrentValue = false,
@@ -278,7 +277,7 @@ AimbotTab:CreateToggle({
     Callback = coolkidAimbot
 })
 
--- Popup solver (for 1x1x1x1)
+-- popup solver 1x1
 AimbotTab:CreateToggle({
     Name = "1x1 PopUp Solver",
     CurrentValue = false,
@@ -311,11 +310,7 @@ AimbotTab:CreateToggle({
     end
 })
 
--- Add a section label
-AimbotTab:CreateSection("Character Specific Aimbots")
-
--- Initialization complete notification
-task.wait(1) -- Ensure everything is loaded
+task.wait(1) -- for sure everything is loaded
 Rayfield:Notify({
     Title = "Aimbot Ready",
     Content = "All features loaded successfully!",
