@@ -1,4 +1,4 @@
-local ver = "v0.3.4" 
+local ver = ".gg/YVyfVYGR23" 
 
 local Vexis = Instance.new("ScreenGui")
 local MenusTabFrame = Instance.new("Frame")
