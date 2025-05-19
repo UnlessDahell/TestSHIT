@@ -49,6 +49,45 @@ local CreditTotalText_3 = Instance.new("TextLabel")
 local PageTitleText_3 = Instance.new("TextLabel")
 local ViewportFrame = Instance.new("ViewportFrame")
 
+local TweenService = game:GetService("TweenService") local Players = game:GetService("Players") local Lighting = game:GetService("Lighting") local player = Players.LocalPlayer local gui = player:WaitForChild("PlayerGui"):WaitForChild("Vexis")
+
+local blur = Lighting:FindFirstChild("VexisBlur") or Instance.new("BlurEffect") blur.Size = 0 blur.Name = "VexisBlur" blur.Parent = Lighting
+
+local function toggleBlur(enabled) TweenService:Create(blur, TweenInfo.new(0.5), {Size = enabled and 12 or 0}):Play() end
+
+for _, frameName in ipairs({"MainMenuWindow", "ESPMenuWindow", "ToolsMenuWindow"}) do local panel = gui:WaitForChild(frameName) panel:GetPropertyChangedSignal("Visible"):Connect(function() toggleBlur(panel.Visible) end) end
+
+local function animatePanel(panel) panel.BackgroundTransparency = 1 local originalPos = panel.Position panel.Position = originalPos + UDim2.new(0, 0, 0.1, 0) panel.Visible = true TweenService:Create(panel, TweenInfo.new(0.3), { BackgroundTransparency = 0, Position = originalPos }):Play() end
+
+local function neonifyButton(btn, neonColor) local corner = Instance.new("UICorner") corner.CornerRadius = UDim.new(0, 10) corner.Parent = btn
+
+local stroke = Instance.new("UIStroke")
+stroke.Color = neonColor or Color3.fromRGB(0, 255, 255)
+stroke.Thickness = 2
+stroke.Parent = btn
+
+btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+btn.MouseEnter:Connect(function()
+    TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = neonColor or Color3.fromRGB(0, 60, 90)}):Play()
+end)
+btn.MouseLeave:Connect(function()
+    TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(25, 25, 25)}):Play()
+end)
+
+end
+
+local function styleAllButtons(frame) for _, child in ipairs(frame:GetDescendants()) do if child:IsA("TextButton") then neonifyButton(child, Color3.fromRGB(0, 255, 180)) end end end
+
+local mainMenu = gui:WaitForChild("MainMenuWindow") local espMenu = gui:WaitForChild("ESPMenuWindow") local toolsMenu = gui:WaitForChild("ToolsMenuWindow")
+
+styleAllButtons(mainMenu) styleAllButtons(espMenu) styleAllButtons(toolsMenu)
+
+mainMenu:GetPropertyChangedSignal("Visible"):Connect(function() if mainMenu.Visible then animatePanel(mainMenu) end end) espMenu:GetPropertyChangedSignal("Visible"):Connect(function() if espMenu.Visible then animatePanel(espMenu) end end) toolsMenu:GetPropertyChangedSignal("Visible"):Connect(function() if toolsMenu.Visible then animatePanel(toolsMenu) end end)
+
+local tabFrame = gui:WaitForChild("MenusTabFrame") tabFrame.Position = UDim2.new(1.1, 0, 0.5, 0) TweenService:Create(tabFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), { Position = UDim2.new(1, 0, 0.5, 0) }):Play()
+
 Vexis.Name = "Vexis"
 Vexis.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
@@ -83,7 +122,8 @@ TextLabel.Position = UDim2.new(0, 0, 1, 0)
 TextLabel.Size = UDim2.new(1, 0, 0.200000003, 0)
 TextLabel.Font = Enum.Font.ArialBold
 TextLabel.Text = "Vexis Hub"
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextColor3 = Color3.fromRGB(255, 255
+, 255)
 TextLabel.TextScaled = true
 TextLabel.TextSize = 12.000
 TextLabel.TextStrokeTransparency = 0.000
