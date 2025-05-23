@@ -2,7 +2,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
     Name = "Vexis H | Fuckass Test",
-    LoadingTitle = "Vexis H | Nigga Teet Edition",
+    LoadingTitle = "Vexis H | Nigga Test Edition",
     LoadingSubtitle = "By Tester Who Live Under Rock",
     ConfigurationSaving = {
         Enabled = false,
@@ -14,9 +14,9 @@ local Window = Rayfield:CreateWindow({
     }
 })
 
-local MainTab = Window:CreateTab("Main", "construction")
-local ESPTab = Window:CreateTab("ESP", "eye")
-local ToolsTab = Window:CreateTab("Tools", "hammer")
+local MainTab = Window:CreateTab("Main")
+local ESPTab = Window:CreateTab("ESP")
+local ToolsTab = Window:CreateTab("Tools")
 
 local podstoggle = false
 local pctoggle = false
